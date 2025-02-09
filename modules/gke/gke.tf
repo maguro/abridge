@@ -1,16 +1,7 @@
-locals {
-  node_pool_names = length(var.node_pools) > 0 ? [for np in toset(var.node_pools) : np.name] : ["autopilot"]
-  node_pools = zipmap(local.node_pool_names, tolist(toset(var.node_pools)))
-
-  node_service_emails = length(var.node_pools) > 0 ? [for np in toset(var.node_pools) : "a5e-${var.env}-${var.cluster_name}-${np.name}-tf"] : ["a5e-${var.env}-${var.cluster_name}-autopilot-tf"]
-
-  node_service_accounts = zipmap(local.node_pool_names, local.node_service_emails)
-}
-
 resource "google_container_cluster" "cluster" {
   provider = google
 
-  count = length(var.node_pools) > 0 ? 1 : 0
+  count = local.autopilot_in_use ? 0 : 1
 
   name        = "a5e-${var.env}-${var.cluster_name}-tf"
   description = "Terraform managed GKE cluster, ${var.cluster_name}, for ${var.env} environment"
@@ -21,8 +12,8 @@ resource "google_container_cluster" "cluster" {
   location       = var.region
   node_locations = var.node_locations
 
-  network    = "projects/${var.project}/global/networks/a5e-${var.env}-${var.vpc}-tf"
-  subnetwork = "projects/${var.project}/regions/${var.region}/subnetworks/a5e-${var.env}-${var.vpc}-${var.cluster_name}-tf"
+  network    = var.vpc_network_id
+  subnetwork = google_compute_subnetwork.vpc_subnetwork.id
 
   ip_allocation_policy {
     cluster_secondary_range_name  = google_network_connectivity_internal_range.pods_ip_range.name
@@ -49,7 +40,6 @@ resource "google_container_cluster" "cluster" {
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = true
-    # master_ipv4_cidr_block  = var.master_ipv4_cidr_block
   }
 
   master_auth {
@@ -59,6 +49,10 @@ resource "google_container_cluster" "cluster" {
   }
 
   master_authorized_networks_config {
+    cidr_blocks {
+      cidr_block   = "${module.bastion_deployments.bastion_ip}/32"
+      display_name = "External Control Plane access"
+    }
   }
 }
 

@@ -3,9 +3,23 @@ module "dev_environment" {
 
   deletion_protection = var.deletion_protection
 
-  env                      = "dev"
-  project                  = var.project
-  region                   = var.region
-  private_ip_google_access = var.private_ip_google_access
-  master_ipv4_cidr_block   = var.master_ipv4_cidr_block
+  env     = "dev"
+  project = var.project
+  region  = var.region
+}
+
+module "access" {
+  source       = "../../../modules/bastion/access"
+  env          = "dev"
+  project      = var.project
+  cluster_name = "train"
+  email        = "alan.cabrera@gmail.com"
+
+  depends_on = [module.dev_environment]
+}
+
+resource "google_project_iam_member" "user_email-gke" {
+  project = var.project
+  role    = "roles/container.viewer"
+  member  = "user:alan.cabrera@gmail.com"
 }

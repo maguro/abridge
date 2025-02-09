@@ -1,7 +1,7 @@
 resource "google_container_cluster" "autopilot" {
   provider = google
 
-  count = length(var.node_pools) > 0  ? 0 : 1
+  count = local.autopilot_in_use ? 1 : 0
 
   name        = "a5e-${var.env}-${var.cluster_name}-tf"
   description = "Terraform managed GKE Autopilot cluster, ${var.cluster_name}, for ${var.env} environment. Deployed in the ${var.cluster_name} of the VPC ${var.vpc}."
@@ -13,7 +13,7 @@ resource "google_container_cluster" "autopilot" {
   node_locations = var.node_locations
 
   network    = "projects/${var.project}/global/networks/a5e-${var.env}-${var.vpc}-tf"
-  subnetwork = "projects/${var.project}/regions/${var.region}/subnetworks/a5e-${var.env}-${var.vpc}-${var.cluster_name}-tf"
+  subnetwork = google_compute_subnetwork.vpc_subnetwork.id
 
   ip_allocation_policy {
     cluster_secondary_range_name  = google_network_connectivity_internal_range.pods_ip_range.name
@@ -51,7 +51,6 @@ resource "google_container_cluster" "autopilot" {
   private_cluster_config {
     enable_private_nodes    = true
     enable_private_endpoint = true
-    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
   }
 
   master_auth {
@@ -61,5 +60,9 @@ resource "google_container_cluster" "autopilot" {
   }
 
   master_authorized_networks_config {
+    cidr_blocks {
+      cidr_block   = "${module.bastion_deployments.bastion_ip}/32"
+      display_name = "External Control Plane access"
+    }
   }
 }

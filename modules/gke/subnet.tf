@@ -2,7 +2,7 @@ resource "google_compute_subnetwork" "vpc_subnetwork" {
   name                     = "a5e-${var.env}-${var.vpc}-${var.cluster_name}-tf"
   description              = "Terraform managed subnet"
   project                  = var.project
-  network                  = "projects/${var.project}/global/networks/a5e-${var.env}-${var.vpc}-tf"
+  network                  = var.vpc_network_id
   region                   = var.region
   private_ip_google_access = true
 

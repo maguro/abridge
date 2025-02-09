@@ -29,12 +29,6 @@ variable "env" {
   type        = string
 }
 
-variable "master_ipv4_cidr_block" {
-  description = "AutoPilot GKE master CIDR"
-  type        = string
-  default     = "10.100.100.0/28"
-}
-
 variable "node_locations" {
   description = "Zone hosting GKE installation"
   type        = list(string)
@@ -64,5 +58,10 @@ variable "region" {
 
 variable "vpc" {
   description = "The name of the VPC network"
+  type        = string
+}
+
+variable "vpc_network_id" {
+  description = "The ID of the VPC network"
   type        = string
 }
