@@ -50,7 +50,6 @@ module "gke_cluster" {
   # ]
 
   depends_on = [
-    module.vpc_ml,
     google_service_account.special_service_account,
   ]
 }

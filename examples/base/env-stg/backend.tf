@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "a5e-state-dev-tf"
+    bucket = "a5e-state-stg-tf"
     prefix = "base"
   }
 }

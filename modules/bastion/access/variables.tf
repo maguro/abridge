@@ -4,12 +4,12 @@ variable "env" {
 }
 
 variable "project" {
-  description = "Project hosting cluster"
+  description = "GCP project hosting cluster"
   type        = string
 }
 
 variable "cluster" {
-  description = "Name of the GKE cluster"
+  description = "Name of the GKE cluster bastion is associated with"
   type        = string
 }
 

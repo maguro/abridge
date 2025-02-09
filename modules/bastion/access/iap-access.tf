@@ -1,3 +1,6 @@
+##
+## Adds an entry that allows the user
+##
 resource "google_iap_tunnel_instance_iam_member" "member" {
   project  = var.project
   zone     = var.zone
