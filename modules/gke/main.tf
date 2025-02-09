@@ -4,7 +4,7 @@ locals {
 
   autopilot_in_use    = length(var.node_pools) == 0
   node_service_keys   = local.autopilot_in_use ? ["autopilot"] : local.node_pool_names
-  node_service_emails = local.autopilot_in_use ? ["a5e-${var.env}-${var.cluster_name}-autopilot-tf"] : [for np in toset(var.node_pools) : "a5e-${var.env}-${var.cluster_name}-${np.name}-pool-tf"]
+  node_service_emails = local.autopilot_in_use ? ["a5e-${var.env}-${var.cluster}-autopilot-tf"] : [for np in toset(var.node_pools) : "a5e-${var.env}-${var.cluster}-${np.name}-pool-tf"]
 
   node_service_accounts = zipmap(local.node_service_keys, local.node_service_emails)
 }
@@ -12,7 +12,7 @@ locals {
 module "bastion_deployments" {
   source            = "../bastion"
   env               = var.env
-  cluster_name      = var.cluster_name
+  cluster      = var.cluster
   project           = var.project
   region            = var.region
   vpc               = var.vpc

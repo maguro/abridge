@@ -4,8 +4,8 @@ resource "google_service_account" "gke_service_account" {
 
   project      = var.project
   account_id   = each.value
-  display_name = "ABridge ${var.env} enironment GKE SA for ${var.cluster_name} node pool ${each.key}"
-  description  = "Terraform managed GKE service account for the ${var.cluster_name} cluster node pool ${each.key} in the ${var.env} enironment"
+  display_name = "ABridge ${var.env} environment GKE SA for ${var.cluster} node pool ${each.key}"
+  description  = "Terraform managed GKE service account for the ${var.cluster} cluster node pool ${each.key} in the ${var.env} environment"
 }
 
 resource "google_project_iam_member" "gke_service_account-default_service_account" {

@@ -1,9 +1,9 @@
 locals {
-  hostname = "a5e-${var.env}-${var.cluster_name}-bastion-tf"
+  hostname = "a5e-${var.env}-${var.cluster}-bastion-tf"
 }
 
 resource "google_compute_address" "static" {
-  name    = "a5e-${var.env}-${var.cluster_name}-bastion-ip-tf"
+  name    = "a5e-${var.env}-${var.cluster}-bastion-ip-tf"
   project = var.project
   region  = var.region
 }
@@ -16,7 +16,7 @@ resource "google_compute_instance" "bastion" {
 
   machine_type = "e2-micro"
   zone         = var.zone
-  tags         = ["a5e-${var.env}-${var.cluster_name}-bastion-tf"]
+  tags         = ["a5e-${var.env}-${var.cluster}-bastion-tf"]
 
   boot_disk {
     initialize_params {

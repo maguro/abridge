@@ -12,7 +12,7 @@ module "access" {
   source       = "../../../modules/bastion/access"
   env          = "dev"
   project      = var.project
-  cluster_name = "train"
+  cluster = "train"
   email        = "alan.cabrera@gmail.com"
 
   depends_on = [module.dev_environment]

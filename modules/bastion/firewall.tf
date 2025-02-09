@@ -1,6 +1,6 @@
 // Allow access to the Bastion Host via SSH.
 resource "google_compute_firewall" "bastion-iap-ssh" {
-  name      = "a5e-${var.env}-${var.cluster_name}-bastion-iap-ssh-tf"
+  name      = "a5e-${var.env}-${var.cluster}-bastion-iap-ssh-tf"
   network   = var.vpc_network_id
   direction = "INGRESS"
   project   = var.project
@@ -13,5 +13,5 @@ resource "google_compute_firewall" "bastion-iap-ssh" {
     ports    = ["22"]
   }
 
-  target_tags = ["a5e-${var.env}-${var.cluster_name}-bastion-tf"]
+  target_tags = ["a5e-${var.env}-${var.cluster}-bastion-tf"]
 }

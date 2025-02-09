@@ -8,7 +8,7 @@ variable "project" {
   type        = string
 }
 
-variable "cluster_name" {
+variable "cluster" {
   description = "Name of the GKE cluster"
   type        = string
 }

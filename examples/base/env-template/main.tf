@@ -13,7 +13,7 @@ module "vpc_ml" {
 module "gke_cluster" {
   source              = "../../../modules/gke"
   deletion_protection = var.deletion_protection
-  cluster_name        = local.section_training
+  cluster        = local.section_training
   project             = var.project
   env                 = var.env
   vpc                 = local.team_ml

@@ -3,8 +3,8 @@ resource "google_container_cluster" "autopilot" {
 
   count = local.autopilot_in_use ? 1 : 0
 
-  name        = "a5e-${var.env}-${var.cluster_name}-tf"
-  description = "Terraform managed GKE Autopilot cluster, ${var.cluster_name}, for ${var.env} environment. Deployed in the ${var.cluster_name} of the VPC ${var.vpc}."
+  name        = "a5e-${var.env}-${var.cluster}-tf"
+  description = "Terraform managed GKE Autopilot cluster, ${var.cluster}, for ${var.env} environment. Deployed in the ${var.cluster} of the VPC ${var.vpc}."
 
   deletion_protection = var.deletion_protection
 

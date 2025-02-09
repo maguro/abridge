@@ -1,6 +1,6 @@
 resource "google_service_account" "bastion_service_account" {
   project      = var.project
-  account_id   = "a5e-${var.env}-${var.cluster_name}-bastion-tf"
+  account_id   = "a5e-${var.env}-${var.cluster}-bastion-tf"
   display_name = "${var.env} bastion service account"
   description  = "Terraform managed Service Account for bastion in ${var.env}"
 }

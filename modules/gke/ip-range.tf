@@ -1,5 +1,11 @@
+##
+## Reserve IP ranges for
+## - nodes
+## - pods
+## - services
+##
 resource "google_network_connectivity_internal_range" "nodes_ip_range" {
-  name          = "a5e-${var.env}-${var.cluster_name}-nodes-tf"
+  name          = "a5e-${var.env}-${var.cluster}-nodes-tf"
   project       = var.project
   network       = var.vpc_network_id
   usage         = "FOR_VPC"
@@ -8,7 +14,7 @@ resource "google_network_connectivity_internal_range" "nodes_ip_range" {
 }
 
 resource "google_network_connectivity_internal_range" "pods_ip_range" {
-  name          = "a5e-${var.env}-${var.cluster_name}-pods-tf"
+  name          = "a5e-${var.env}-${var.cluster}-pods-tf"
   project       = var.project
   network       = var.vpc_network_id
   usage         = "FOR_VPC"
@@ -17,7 +23,7 @@ resource "google_network_connectivity_internal_range" "pods_ip_range" {
 }
 
 resource "google_network_connectivity_internal_range" "services_ip_range" {
-  name          = "a5e-${var.env}-${var.cluster_name}-services-tf"
+  name          = "a5e-${var.env}-${var.cluster}-services-tf"
   project       = var.project
   network       = var.vpc_network_id
   usage         = "FOR_VPC"

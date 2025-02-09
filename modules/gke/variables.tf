@@ -7,7 +7,7 @@ variable "cidr_prefix_lengths" {
   })
 }
 
-variable "cluster_name" {
+variable "cluster" {
   description = "Name of the GKE cluster"
   type        = string
 }
