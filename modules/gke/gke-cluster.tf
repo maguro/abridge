@@ -59,18 +59,25 @@ resource "google_container_cluster" "cluster" {
 resource "google_container_node_pool" "pools" {
   for_each = local.node_pools
 
-  name     = each.key
-  project  = var.project
-  location = var.region
-  // use node_locations if provided, defaults to cluster level node_locations if not specified
+  name           = each.key
+  project        = var.project
+  location       = var.region
   node_locations = lookup(each.value, "node_locations", "") != "" ? split(",", each.value["node_locations"]) : null
 
   cluster = google_container_cluster.cluster[0].name
 
-  node_count = lookup(each.value, "node_count", 1)
+  node_count = lookup(merge(
+    local.node_pools_overrides["DEFAULT_OVERRIDES"],
+    each.value,
+    local.node_pools_overrides[each.key],
+  ), "node_count", 1)
 
   node_config {
-    machine_type = lookup(each.value, "machine_type", "e2-medium")
+    machine_type = lookup(merge(
+      local.node_pools_overrides["DEFAULT_OVERRIDES"],
+      each.value,
+      local.node_pools_overrides[each.key],
+    ), "machine_type", "e2-medium")
 
     service_account = lookup(
       each.value,
@@ -78,15 +85,27 @@ resource "google_container_node_pool" "pools" {
       "${local.node_service_accounts[each.key]}@${var.project}.iam.gserviceaccount.com",
     )
 
-    local_ssd_count = lookup(each.value, "local_ssd_count", 0)
-    disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
-    disk_type       = lookup(each.value, "disk_type", "pd-standard")
+    local_ssd_count = lookup(merge(
+      local.node_pools_overrides["DEFAULT_OVERRIDES"],
+      each.value,
+      local.node_pools_overrides[each.key],
+    ), "local_ssd_count", 0)
+    disk_size_gb = lookup(merge(
+      local.node_pools_overrides["DEFAULT_OVERRIDES"],
+      each.value,
+      local.node_pools_overrides[each.key],
+    ), "disk_size_gb", 100)
+    disk_type = lookup(merge(
+      local.node_pools_overrides["DEFAULT_OVERRIDES"],
+      each.value,
+      local.node_pools_overrides[each.key],
+    ), "disk_type", "pd-standard")
 
     dynamic "guest_accelerator" {
       for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
       content {
-        type               = lookup(each.value, "accelerator_type", "")
-        count              = lookup(each.value, "accelerator_count", 0)
+        type = lookup(each.value, "accelerator_type", "")
+        count = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
       }
     }

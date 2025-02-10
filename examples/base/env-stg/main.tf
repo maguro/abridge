@@ -9,11 +9,11 @@ module "dev_environment" {
 }
 
 module "access" {
-  source       = "../../../modules/bastion/access"
-  env          = "stg"
-  project      = var.project
+  source  = "../../../modules/bastion/access"
+  env     = "stg"
+  project = var.project
   cluster = "train"
-  email        = "alan.cabrera@gmail.com"
+  email   = "alan.cabrera@gmail.com"
 
   depends_on = [module.dev_environment]
 }

@@ -19,3 +19,13 @@ variable "deletion_protection" {
   type        = bool
   default     = true
 }
+
+variable "node_pools_overrides" {
+  type = map(map(any))
+
+  # Default is being set in variables_defaults.tf
+  default = {
+    all               = {}
+    default-node-pool = {}
+  }
+}
