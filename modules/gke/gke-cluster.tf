@@ -3,7 +3,7 @@ resource "google_container_cluster" "cluster" {
 
   count = local.autopilot_in_use ? 0 : 1
 
-  name        = "a5e-${var.env}-${var.cluster}-tf"
+  name        = "a5e-${var.env}-${var.cluster}-cluster-tf"
   description = "Terraform managed GKE cluster, ${var.cluster}, for ${var.env} environment"
 
   deletion_protection = var.deletion_protection
@@ -81,5 +81,14 @@ resource "google_container_node_pool" "pools" {
     local_ssd_count = lookup(each.value, "local_ssd_count", 0)
     disk_size_gb    = lookup(each.value, "disk_size_gb", 100)
     disk_type       = lookup(each.value, "disk_type", "pd-standard")
+
+    dynamic "guest_accelerator" {
+      for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
+      content {
+        type               = lookup(each.value, "accelerator_type", "")
+        count              = lookup(each.value, "accelerator_count", 0)
+        gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+      }
+    }
   }
 }

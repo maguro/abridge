@@ -3,7 +3,7 @@ resource "google_container_cluster" "autopilot" {
 
   count = local.autopilot_in_use ? 1 : 0
 
-  name        = "a5e-${var.env}-${var.cluster}-tf"
+  name        = "a5e-${var.env}-${var.cluster}-autopilot-tf"
   description = "Terraform managed GKE Autopilot cluster, ${var.cluster}, for ${var.env} environment. Deployed in the ${var.cluster} of the VPC ${var.vpc}."
 
   deletion_protection = var.deletion_protection
@@ -12,7 +12,7 @@ resource "google_container_cluster" "autopilot" {
   location       = var.region
   node_locations = var.node_locations
 
-  network    = "projects/${var.project}/global/networks/a5e-${var.env}-${var.vpc}-tf"
+  network    = var.vpc_network_id
   subnetwork = google_compute_subnetwork.vpc_subnetwork.id
 
   ip_allocation_policy {
