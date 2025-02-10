@@ -2,7 +2,21 @@ locals {
   hostname = "a5e-${var.env}-${var.cluster}-bastion-tf"
 }
 
-// The Bastion host.
+/*
+  This is needed to gain access to the internet to install tinyproxy.
+  Ideally, the bastion image would have it installed so that this public IP
+  address isn't needed.  With that said, IAP still protects access to the
+  bastion.
+ */
+resource "google_compute_address" "static" {
+  name    = "a5e-${var.env}-${var.cluster}-bastion-ip-tf"
+  project = var.project
+  region  = var.region
+}
+
+/*
+  The Bastion host.
+ */
 resource "google_compute_instance" "bastion" {
   name    = local.hostname
   project = var.project
@@ -32,6 +46,9 @@ resource "google_compute_instance" "bastion" {
   network_interface {
     network    = var.vpc_network_id
     subnetwork = var.vpc_subnetwork_id
+    access_config {
+      nat_ip = google_compute_address.static.address
+    }
   }
 
   // Allow the instance to be stopped by Terraform when updating configuration.

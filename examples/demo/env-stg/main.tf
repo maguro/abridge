@@ -1,4 +1,4 @@
-module "dev_environment" {
+module "stg_environment" {
   source = "../env-template"
 
   deletion_protection = var.deletion_protection
@@ -6,6 +6,25 @@ module "dev_environment" {
   env     = "stg"
   project = var.project
   region  = var.region
+
+  node_pools_overrides = {
+    // this overrides the defaults
+    DEFAULT_OVERRIDES = {
+      disk_size_gb = 50
+      machine_type = "e2-micro"
+    }
+
+    // this overrides the specific pool settings
+    "pool-01" = {
+      node_count = 2
+    }
+    "pool-02" = {
+      node_count = 2
+    }
+    "pool-03" = {
+      node_count = 2
+    }
+  }
 }
 
 module "access" {
@@ -15,7 +34,7 @@ module "access" {
   cluster = "train"
   email   = "alan.cabrera@gmail.com"
 
-  depends_on = [module.dev_environment]
+  depends_on = [module.stg_environment]
 }
 
 resource "google_project_iam_member" "user_email-gke" {

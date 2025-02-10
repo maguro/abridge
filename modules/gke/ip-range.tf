@@ -1,16 +1,16 @@
-##
-## Reserve IP ranges for
-## - nodes
-## - pods
-## - services
-##
+/*
+  Reserve IP ranges for
+  - nodes
+  - pods
+  - services
+ */
 resource "google_network_connectivity_internal_range" "nodes_ip_range" {
   name          = "a5e-${var.env}-${var.cluster}-nodes-tf"
   project       = var.project
   network       = var.vpc_network_id
   usage         = "FOR_VPC"
   peering       = "FOR_SELF"
-  prefix_length = var.cidr_prefix_lengths.nodes_prefix_length
+  prefix_length = var.cidr_prefix_lengths.nodes
 }
 
 resource "google_network_connectivity_internal_range" "pods_ip_range" {
@@ -19,7 +19,7 @@ resource "google_network_connectivity_internal_range" "pods_ip_range" {
   network       = var.vpc_network_id
   usage         = "FOR_VPC"
   peering       = "FOR_SELF"
-  prefix_length = var.cidr_prefix_lengths.pods_prefix_length
+  prefix_length = var.cidr_prefix_lengths.pods
 }
 
 resource "google_network_connectivity_internal_range" "services_ip_range" {
@@ -28,5 +28,5 @@ resource "google_network_connectivity_internal_range" "services_ip_range" {
   network       = var.vpc_network_id
   usage         = "FOR_VPC"
   peering       = "FOR_SELF"
-  prefix_length = var.cidr_prefix_lengths.services_prefix_length
+  prefix_length = var.cidr_prefix_lengths.services
 }

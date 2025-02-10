@@ -1,3 +1,6 @@
+/*
+  Needed to allow `gcloud compute ssh` bastion.
+ */
 resource "google_project_iam_custom_role" "ssh_bastion_role" {
   role_id     = "a5e_${var.env}_${var.cluster}_ssh_bastion_tf"
   project     = var.project

@@ -1,9 +1,9 @@
 variable "cidr_prefix_lengths" {
   description = "CIDR prefix lengths for VPC cluster"
   type = object({
-    nodes_prefix_length    = number
-    pods_prefix_length     = number
-    services_prefix_length = number
+    nodes    = number
+    pods     = number
+    services = number
   })
 }
 

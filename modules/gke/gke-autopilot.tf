@@ -60,6 +60,7 @@ resource "google_container_cluster" "autopilot" {
   }
 
   master_authorized_networks_config {
+    // Bastion access to the cluster
     cidr_blocks {
       cidr_block   = "${module.bastion_deployments.bastion_ip}/32"
       display_name = "External Control Plane access"

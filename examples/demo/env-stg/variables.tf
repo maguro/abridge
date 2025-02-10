@@ -1,9 +1,3 @@
-variable "project" {
-  description = "Project hosting cluster"
-  type        = string
-  default     = "abridge-takehome"
-}
-
 variable "region" {
   description = "Region hosting installation"
   type        = string

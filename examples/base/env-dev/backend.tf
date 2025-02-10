@@ -1,6 +1,0 @@
-terraform {
-  backend "gcs" {
-    bucket = "a5e-state-dev-tf"
-    prefix = "base"
-  }
-}

@@ -49,6 +49,7 @@ resource "google_container_cluster" "cluster" {
   }
 
   master_authorized_networks_config {
+    // Bastion access to the cluster
     cidr_blocks {
       cidr_block   = "${module.bastion_deployments.bastion_ip}/32"
       display_name = "External Control Plane access"
@@ -104,8 +105,8 @@ resource "google_container_node_pool" "pools" {
     dynamic "guest_accelerator" {
       for_each = lookup(each.value, "accelerator_count", 0) > 0 ? [1] : []
       content {
-        type = lookup(each.value, "accelerator_type", "")
-        count = lookup(each.value, "accelerator_count", 0)
+        type               = lookup(each.value, "accelerator_type", "")
+        count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
       }
     }

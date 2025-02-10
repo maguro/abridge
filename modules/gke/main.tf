@@ -12,7 +12,7 @@ locals {
 module "bastion_deployments" {
   source            = "../bastion"
   env               = var.env
-  cluster      = var.cluster
+  cluster           = var.cluster
   project           = var.project
   region            = var.region
   vpc               = var.vpc
