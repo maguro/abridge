@@ -65,7 +65,7 @@ resource "google_compute_instance" "bastion" {
   provisioner "local-exec" {
     command = <<EOF
         READY=""
-        for i in $(seq 1 20); do
+        for i in $(seq 1 40); do
           if gcloud compute ssh ${local.hostname} --tunnel-through-iap --project ${var.project} --zone ${var.zone} --command uptime; then
             READY="yes"
             break;
