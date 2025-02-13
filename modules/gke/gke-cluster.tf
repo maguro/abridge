@@ -32,8 +32,7 @@ resource "google_container_cluster" "cluster" {
   maintenance_policy {
     recurring_window {
       start_time = "2019-01-01T08:00:00Z"
-      end_time   = "2019-01-01T16:00:00Z"
-      recurrence = "FREQ=WEEKLY;BYDAY=SA,SU"
+      end_time   = "2019-01-01T16:00:00Z"      recurrence = "FREQ=WEEKLY;BYDAY=SA,SU"
     }
   }
 
@@ -108,6 +107,21 @@ resource "google_container_node_pool" "pools" {
         type               = lookup(each.value, "accelerator_type", "")
         count              = lookup(each.value, "accelerator_count", 0)
         gpu_partition_size = lookup(each.value, "gpu_partition_size", null)
+
+        dynamic "gpu_driver_installation_config" {
+          for_each = lookup(each.value, "gpu_driver_version", "") != "" ? [1] : []
+          content {
+            gpu_driver_version = lookup(each.value, "gpu_driver_version", "")
+          }
+        }
+
+        dynamic "gpu_sharing_config" {
+          for_each = lookup(each.value, "gpu_sharing_strategy", "") != "" ? [1] : []
+          content {
+            gpu_sharing_strategy       = lookup(each.value, "gpu_sharing_strategy", "")
+            max_shared_clients_per_gpu = lookup(each.value, "max_shared_clients_per_gpu", 2)
+          }
+        }
       }
     }
   }
