@@ -32,7 +32,7 @@ obtain the GKE credentials of for that Google user.
 $ gcloud auth login
 $ gcloud container clusters get-credentials a5e-stg-train-tf \
     --location=us-central1 \
-    --project=abridge-takehome
+    --project=$DEMO_PROJECT
 ```
 
 In a separate terminal, open an ssh tunnel to the bastion associated with the
@@ -41,7 +41,7 @@ work.
 
 ```shell
 $ gcloud compute ssh a5e-stg-train-bastion-tf --tunnel-through-iap \
-  --project abridge-takehome \
+  --project $DEMO_PROJECT \
   --zone us-central1-c -- -L8888:127.0.0.1:8888
 ```
 

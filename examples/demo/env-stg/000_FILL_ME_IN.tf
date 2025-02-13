@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
     ##
-    ## DEMO: Change to GCS bucket for dev Terraform state.
+    ## DEMO: Change to GCS bucket for stg Terraform state.
     ##
     bucket = "a5e-state-stg-tf"
     ##

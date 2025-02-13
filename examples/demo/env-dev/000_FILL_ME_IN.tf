@@ -22,11 +22,11 @@ variable "project" {
 }
 
 variable "bastion_account" {
-  description = "The Bastion account email to connect to Bastion VMs."
+  description = "The Operator Account email to connect to Bastion VMs."
   type        = string
 
   ##
-  ## DEMO: Replace w/ desired Bastion Account email
+  ## DEMO: Replace w/ desired Operator Account email
   ##
   default = "alan.cabrera@gmail.com"
   ##

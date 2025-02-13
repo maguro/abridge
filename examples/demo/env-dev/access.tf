@@ -1,5 +1,5 @@
 /*
-  Give a Bastion Account access to the bastion a5e-dev-train-bastion-tf
+  Give a Operator Account access to the bastion a5e-dev-train-bastion-tf
  */
 module "train_access" {
   source  = "../../../modules/bastion/access"
@@ -9,11 +9,12 @@ module "train_access" {
 
   email = var.bastion_account
 
+  # ensure environment has been built
   depends_on = [module.dev_environment]
 }
 
 /*
-  Give a Bastion Account access to the bastion a5e-dev-fe-bastion-tf
+  Give a Operator Account access to the bastion a5e-dev-fe-bastion-tf
  */
 module "fe_access" {
   source  = "../../../modules/bastion/access"
@@ -23,5 +24,6 @@ module "fe_access" {
 
   email = var.bastion_account
 
+  # ensure environment has been built
   depends_on = [module.dev_environment]
 }

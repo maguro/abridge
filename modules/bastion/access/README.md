@@ -15,6 +15,7 @@ module "access" {
   cluster      = "train"
   email        = "alan.cabrera@gmail.com"
 
+  # ensure environment has been built
   depends_on = [module.dev_environment]
 }
 ```
