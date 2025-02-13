@@ -26,13 +26,18 @@ resource "google_container_cluster" "cluster" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
+  vertical_pod_autoscaling {
+    enabled = var.enable_vertical_pod_autoscaling
+  }
+
   logging_service    = "logging.googleapis.com/kubernetes"
   monitoring_service = "monitoring.googleapis.com/kubernetes"
 
   maintenance_policy {
     recurring_window {
       start_time = "2019-01-01T08:00:00Z"
-      end_time   = "2019-01-01T16:00:00Z"      recurrence = "FREQ=WEEKLY;BYDAY=SA,SU"
+      end_time   = "2019-01-01T16:00:00Z"
+      recurrence = "FREQ=WEEKLY;BYDAY=SA,SU"
     }
   }
 

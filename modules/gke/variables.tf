@@ -24,6 +24,12 @@ variable "deletion_protection" {
   default     = true
 }
 
+variable "enable_vertical_pod_autoscaling" {
+  description = "Vertical Pod Autoscaling automatically adjusts the resources of pods controlled by it."
+  type        = bool
+  default     = false
+}
+
 variable "env" {
   description = "Environment being managed"
   type        = string
